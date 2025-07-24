@@ -1,7 +1,17 @@
-## Day 2: Courage
+---
+title: "STAR-courage"
+author: "Ayush Chandra"
+format: html
+execute:
+    echo: false
+    message: false
+    warning: false
+---
 
+## Day 2: Courage
 ```{r}
 #| message: false
+
 
 library(tidyverse)      
 library(gt)             
@@ -142,31 +152,79 @@ tibble(
 
 ## Models to Explore
 
-* What type of regression model should we use for predicting `g4math` scores, and why? How do we code this?
+* What type of regression model should we use for predicting `g4math` scores, and why? How do we code this? 
 
 
 * Estimate a model in which `g4math` is the dependent variable and `kind` (class type) is the independent variable. How do you interpret the results? Be sure to also display the confidence intervals.
 
 ```{r}
-
+# Estimate linear regression model
+model_kind <- linear_reg() |>
+  fit(g4math ~ kind, data = x)
+# Tidy output with confidence intervals
+model_kind |> tidy(conf.int = TRUE)
 ```
 
 * Estimate a model in which `g4math` is the dependent variable and both `kind` and `race` are the independent variables. How do you interpret the results? 
 
+
+Intercept = Standard Score
+
+kindregular with aid, kindsmall, racehispanic, etc: Standard deviation between 95% confidence interval from the intercept for that variable
+
 ```{r}
 
+# Fit model with both kind and race (no interaction)
+model_kind_race <- linear_reg() |>
+  fit(g4math ~ kind + race, data = x)
+# Show tidy output with confidence intervals
+model_kind_race |> tidy(conf.int = TRUE)
 ```
 
- Show the output of the code below to AI. Ask for help in interpreting it. What do the coefficients for kind and race suggest? Are any effects statistically significant? How certain or uncertain should I be about these estimates?  
+### Show the output of the code below to AI. Ask for help in interpreting it. What do the coefficients for kind and race suggest? 
+
+Intercept = Standard Score
+
+kindregular with aid, kindsmall, racehispanic, etc: Standard deviation between 95% confidence interval from the intercept for that variable
+
+ 
+### Are any effects statistically significant? How certain or uncertain should I be about these estimates?  
+
+1. The intercept includes every race so it will be used as a baseline
+
+2. It is not statistically significant because the common interval is zero
+
+3. When is is small size then it isn't significant because it includes zero
+
+4. Not significant, includes zero
+
+5. Not significant, includes zero
+
+6. Significant because it doesn't include zero
+
+7. Significant because more years spent ties in with the math score
+
+8. Not significant, includes zero
+
+9. Not significant, includes zero
+
+10. Not significant, includes zero
+
+11. NO DATA
+
+12. Not significant, includes zero
+
+13. Not significant, includes zero
 
 
 ```{r}
+
 linear_reg() |> 
   fit(g4math ~ kind + race + yearssmall + kind*race, data = x) |> 
   tidy(conf.int = TRUE)
 ```
 
- ## More Information
+## More Information
 
 Frederick Mosteller (1995) “The Tennessee study of class size in the early school grades.” The Future of Children, vol. 5, no. 2, pp. 113–127. Data cleaned and discussed in "Quantitative Social Science: An Introduction" by Kosuke Imai.
 
